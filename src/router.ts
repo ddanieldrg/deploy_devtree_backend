@@ -54,7 +54,6 @@ router.post('/user/image', authenticate, uploadImage)
 
 router.get('/:handle', getUserByHandle)
 
-// router.post('/profile/:handle/visit', registerVisit)
 
 router.post('/search',
     body('handle')
