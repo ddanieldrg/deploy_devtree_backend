@@ -8,6 +8,7 @@ export interface IUser extends Document {
     description: string
     image: string
     links: string
+    visits: number //agregado propiedad para visitas 
 }
 
 const userSchema = new Schema({
@@ -46,8 +47,12 @@ const userSchema = new Schema({
     links: {
         type: String,
         default: '[]'
+    },
+    visits: {
+        type: Number,
+        default: 0
     }
-})
+})      
 
 const User = mongoose.model<IUser>('User', userSchema)
 export default User

@@ -139,3 +139,26 @@ export const searchByHandle = async (req: Request, res: Response) => {
         return res.status(500).json({ error: error.message })
     }
 }
+
+
+///Esto permitira incrementar el contador de visitas
+
+export const registerVisit = async (req: Request, res: Response) => {
+    try {
+        const { handle } = req.params
+        const user = await User.findOne({ handle })
+
+        if (!user) {
+            const error = new Error('El Usuario no existe')
+            return res.status(404).json({ error: error.message })
+        }
+
+        user.visits += 1
+        await user.save()
+
+        return res.json({ message: 'Visita registrada correctamente' })
+    } catch (e) {
+        const error = new Error('Hubo un error al registrar la visita')
+        return res.status(500).json({ error: error.message })
+    }
+}

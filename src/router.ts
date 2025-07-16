@@ -3,6 +3,10 @@ import { body } from 'express-validator'
 import { createAccount, getUser, getUserByHandle, login, searchByHandle, updateProfile, uploadImage } from './handlers'
 import { handleInputErrors } from './middleware/validation'
 import { authenticate } from './middleware/auth'
+import { registerVisit } from './handlers'
+import { visitLimiter } from './middleware/visitLimiter'
+
+
 
 const router = Router()
 
@@ -50,12 +54,18 @@ router.post('/user/image', authenticate, uploadImage)
 
 router.get('/:handle', getUserByHandle)
 
+// router.post('/profile/:handle/visit', registerVisit)
+
 router.post('/search',
     body('handle')
         .notEmpty()
         .withMessage('El handle no puede ir vacio'),
     handleInputErrors,
-    searchByHandle
+    searchByHandle  
 )
+
+//Endpointque incrementa las visitas del perfil del usuario
+router.post('/profile/:handle/visit', 
+    visitLimiter, registerVisit)
 
 export default router
